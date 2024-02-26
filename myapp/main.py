@@ -155,7 +155,15 @@ Todo -
     6. Retrive current user ( auth )
 
  """
-
+#current_user: User = Depends(get_current_user)
 @app.get("/users/me")
-async def who_am_i(current_user: User = Depends(get_current_user)):
-    return current_user
+async def user(current_user: User = Depends(get_current_user)):
+    if current_user is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Authentication Failed"
+        )
+    
+    return {
+        "username": current_user.username
+    }
