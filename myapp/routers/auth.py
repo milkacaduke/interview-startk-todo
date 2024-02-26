@@ -25,6 +25,7 @@ async def register_user(user_input: UserIn):
 @router.post("/token", response_model=Token, tags=["Auth"])
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     """ Handles authenticate user, create and return token user client """
+    
     user = await authenticate_user(form_data.username, form_data.password)
     access_token = create_access_token(user.username)
 
@@ -33,6 +34,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
         "token_type": "bearer"
     }
 
-@router.get("/test")
-async def test():
-    return {"message": "/token"}
+@router.post("/refresh")
+async def refresh():
+    ## TODO
+    return None

@@ -1,19 +1,22 @@
 
-from fastapi import FastAPI, HTTPException, status
+from fastapi import FastAPI, HTTPException, status, Depends
 from fastapi.encoders import jsonable_encoder
 from contextlib import asynccontextmanager
+from fastapi.middleware.cors import CORSMiddleware
+
 from myapp.database import init_db
+from myapp.config.config import get_config
 
 from typing import List
 from beanie import PydanticObjectId
 
-from myapp.routers import auth
+from myapp.routers import auth, todo
 
 from myapp.models.todo_model import Todo, UpdateTodo, Comment
 from myapp.models.user_model import User, UserIn, UserInDB
+from myapp.dependency import get_current_user
 
 from pprint import pprint
-from myapp.config.config import get_config
 
 
 # Handles on_startup, on_shutdown.
@@ -28,9 +31,19 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-app.include_router(auth.router)
+app.include_router(auth.router, tags=["Auth"], prefix="/auth")
+app.include_router(todo.router, tags=["Todo"], prefix="/todo")
 
-@app.get("/", tags=["Root Check"])
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+@app.get("/", tags=["Root"])
 async def index() -> dict:
     return {
         "message:": "Todo app root."
@@ -143,4 +156,6 @@ Todo -
 
  """
 
-
+@app.get("/users/me")
+async def who_am_i(current_user: User = Depends(get_current_user)):
+    return current_user

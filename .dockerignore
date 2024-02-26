@@ -9,3 +9,7 @@ __pycache__/
 
 .git
 .gitignore
+
+# Exclude my files
+todo.txt
+commands.txt
