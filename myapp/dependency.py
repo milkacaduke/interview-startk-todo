@@ -70,7 +70,7 @@ def verify_access_token(token: str):
         username = token_payload.get("sub")
         if username is None:
             raise credentials_exception
-    
+
         return token_payload
     except JWTError:
         raise credentials_exception
@@ -78,10 +78,8 @@ def verify_access_token(token: str):
 
 async def authenticate_user(username: str, password: str):
     user = await User.find_one(User.username == username)
-
     if not user:
         return False
-
     if not verify_password(password, user.hashed_password):
         raise credentials_exception
     
@@ -90,12 +88,7 @@ async def authenticate_user(username: str, password: str):
 
 async def get_current_user(token: str = Depends(oauth2_scheme)):
     """ Dependency - Extracts and verifies user from token """
-    print("get_current_user called")
-
     token_payload = verify_access_token(token)
-
-
-
     username = token_payload.get("sub")
 
     # 3. get user from db with decoded username
