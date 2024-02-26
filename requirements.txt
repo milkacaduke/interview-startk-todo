@@ -1,0 +1,5 @@
+fastapi
+beanie
+uvicorn
+python-dotenv
+pydantic-settings
