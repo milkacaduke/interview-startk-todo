@@ -8,7 +8,8 @@ class Config(BaseSettings):
     algorithm: str = "default_algorithm"
     salt: str = "default_salt"
     db_name: str = "default_db_name"
-    env_loaded: bool = False
+    env_loaded: bool = False,
+    access_token_expire_minutes: int = 10
 
     # class Config:
     #     env_file = ".env"

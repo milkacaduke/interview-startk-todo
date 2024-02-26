@@ -1,0 +1,11 @@
+# Exclude specific files
+secret.txt
+*.log
+.env
+
+# Exclude directories
+node_modules/
+__pycache__/
+
+.git
+.gitignore

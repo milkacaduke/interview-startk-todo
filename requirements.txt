@@ -3,3 +3,8 @@ beanie
 uvicorn
 python-dotenv
 pydantic-settings
+passlib
+bcrypt==4.0.1
+pydantic[email]
+python-multipart
+python-jose
